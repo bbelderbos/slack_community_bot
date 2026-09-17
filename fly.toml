@@ -1,0 +1,22 @@
+# See https://fly.io/docs/reference/configuration/ for how to use this file.
+# Rename `app` to whatever you claim with `fly launch --no-deploy`.
+
+app = 'community-bot'
+primary_region = 'ams'
+
+# Socket Mode dials out to Slack, so there are no [http_service] or [[services]]
+# blocks here: nothing needs to reach this machine from the internet. Keep one
+# machine always running so the websocket never drops.
+auto_stop_machines = false
+min_machines_running = 1
+
+[build]
+  dockerfile = 'Dockerfile'
+
+[[mounts]]
+  source = 'community_bot_data'
+  destination = '/data'
+
+[[vm]]
+  size = 'shared-cpu-1x'
+  memory = '256mb'
